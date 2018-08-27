@@ -1,2 +1,2 @@
-Operations-WS
-Simple webservice with math operations
+SpringOperationsService
+Simple Spring webservice with math operations

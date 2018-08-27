@@ -1,4 +1,4 @@
-package com.criticalsoftware.springboot.app;
+package com.criticalsoftware.springboot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
