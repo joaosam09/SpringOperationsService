@@ -2,12 +2,8 @@ package com.criticalsoftware.springboot.operation;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.springframework.stereotype.Service;
-import com.criticalsoftware.springboot.util.SystemLogger;
 
 @Service
 public class OperationService {
@@ -18,27 +14,15 @@ public class OperationService {
 	 * @return OperationResponse Returns an instance with the result and date of the operation.
 	 * @throws OperationNotFoundException Exception thrown when the requested operation doesn't exist
 	 */
-	public OperationResponse calculate(OperationRequest request) throws OperationNotFoundException {												
-		Logger logger = SystemLogger.getLogger(OperationService.class.getName());
-			    
-		try {		    		    		
-			String requestedOperation = request.getOperation().toUpperCase();    			    
-		    if(!isOperationValid(requestedOperation)) {
-		    	logger.log(Level.INFO, "Not found operation - " + requestedOperation);
-		    	throw new OperationNotFoundException("Operation - " + requestedOperation);		    		
-		    }
-		    
-		    Operation newOperation = Operation.valueOf(requestedOperation);					
-			double result = newOperation.calculate(request.getValue1(), request.getValue2());										
-			
-			return createResponse(result);			
-						
-		} finally{
-			for(Handler h:logger.getHandlers())
-			{
-			    h.close();   //must call h.close or a .LCK file will remain.
-			}
-		}		
+	public OperationResponse calculate(OperationRequest request) throws OperationNotFoundException {															    		    		
+		String requestedOperation = request.getOperation().toUpperCase();    			    
+	    if(!isOperationValid(requestedOperation))	    	
+	    	throw new OperationNotFoundException("Unrecognized operation \"" + requestedOperation + "\"");
+	    
+	    Operation newOperation = Operation.valueOf(requestedOperation);					
+		double result = newOperation.calculate(request.getValue1(), request.getValue2());										
+		
+		return createResponse(result);							
 	}
 			
 	/**
