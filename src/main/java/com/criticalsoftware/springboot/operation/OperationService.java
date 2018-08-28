@@ -5,6 +5,9 @@ import java.util.Date;
 
 import org.springframework.stereotype.Service;
 
+/**
+ * Serves a calculation method for different arithmetic operations.
+ */
 @Service
 public class OperationService {
 	

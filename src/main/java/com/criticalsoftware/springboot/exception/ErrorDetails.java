@@ -2,6 +2,12 @@ package com.criticalsoftware.springboot.exception;
 
 import java.util.Date;
 
+/**
+ * Class used to retrieve error details as a client response.
+ * 
+ * @author João Santos
+ * @version 1.0
+ */
 public class ErrorDetails {
 	private Date timestamp;	
 	private String message;
