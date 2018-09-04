@@ -23,7 +23,7 @@ import com.criticalsoftware.springboot.operation.OperationNotFoundException;
 @ControllerAdvice(basePackages = "com.criticalsoftware.springboot.operation")
 public class OperationExceptionHandler extends ResponseEntityExceptionHandler {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger("FileLogger"); //Logger declared in resources/logback.xml
+	private static final Logger LOGGER = LoggerFactory.getLogger("ApplicationFileLogger"); //Logger declared in resources/logback.xml
 	
 	/**
 	 * Handles exceptions of type "HttpMessageNotReadableException".

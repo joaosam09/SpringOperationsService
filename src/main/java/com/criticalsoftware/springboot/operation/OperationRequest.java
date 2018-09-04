@@ -21,15 +21,15 @@ public class OperationRequest {
 	private String operation;
 	
 	public OperationRequest() {
-		super();
+		super();		
 	}	
-	
-	public OperationRequest(double value1, double value2, String operation) {		
+		
+	public OperationRequest(double value1, double value2, String operation) {
 		super();
 		this.value1 = value1;
 		this.value2 = value2;
 		this.operation = operation;
-	}
+	}	
 	
 	public double getValue1() {
 		return value1;
