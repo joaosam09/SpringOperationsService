@@ -1,30 +1,39 @@
 package com.criticalsoftware.springboot.operation;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.mock.web.MockHttpServletResponse;
+import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.web.context.WebApplicationContext;
 
 import com.criticalsoftware.springboot.exception.ErrorDetails;
-import com.criticalsoftware.springboot.exception.OperationExceptionHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-@RunWith(MockitoJUnitRunner.class)
+/**
+ * Tests the service mocking the web application context.
+ * 
+ * @author João Santos
+ * @version 1.0
+ */
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class OperationControllerMockMvcTest {
 		
-    private MockMvc mockMvc;
+	private MockMvc mockMvc;
 
     @Mock
     private OperationService service;
@@ -32,37 +41,45 @@ public class OperationControllerMockMvcTest {
     @InjectMocks
     private OperationController operationController;
     
-    private JacksonTester<ErrorDetails> jsonErrorDetails;
-    
+    @Autowired
+    protected WebApplicationContext webApplicationContext;
+        
+    private JacksonTester<OperationRequest> jsonOperationRequest;
+        
     @Before
-    public void setup() {
-        // Initializes the JacksonTester
+    public void setup() {        
+    	MockitoAnnotations.initMocks(this);
         JacksonTester.initFields(this, new ObjectMapper());
-        mockMvc = MockMvcBuilders.standaloneSetup(operationController)
-                  .setControllerAdvice(new OperationExceptionHandler())                
+        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
                   .build();
     }
     
-//	    @Test
-//	    public void exceptionShouldRetrieveErrorResponse() throws Exception {
-//	    	given(service.calculate(new OperationRequest())).willThrow(new Exception());
-//	    	
-//	    	MockHttpServletResponse response = mockMvc.perform(post("/calculate").accept(MediaType.APPLICATION_JSON))
-//	    													   .andReturn().getResponse();
-//	    	
-//	    	//jsonErrorDetails.write(new ErrorDetails(new Date(), "Internal server error", "Generic exception test"));
-//	    	assertThat(response.getStatus()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
-//	    	assertThat(response.getContentAsString()).contains("Message: Operation not found");
-//	    }
-    
+    /**
+	 * Tests if a request with an unknown operation creates a response with status code = 404 and "Not found" error message.
+	 */
     @Test
-    public void operationNotFoundExceptionShouldRetrieveErrorResponse() throws Exception {
-    	given(service.calculate(new OperationRequest(10,20,"newOp"))).willThrow(new OperationNotFoundException("Unrecognized operation"));
+    public void requestWithUnknownOperationShouldReturnNotFoundErrorMessage() throws Exception {
+    	OperationRequest request = new OperationRequest(10, 20, "newOp");    	  	
     	
-    	MockHttpServletResponse response = mockMvc.perform(post("/calculate").accept(MediaType.APPLICATION_JSON))
-    													   .andReturn().getResponse();
+    	MvcResult result = mockMvc.perform(post("/calculate").contentType(MediaType.APPLICATION_JSON)
+    					   .content(jsonOperationRequest.write(request).getJson()))
+    					   .andExpect(status().isNotFound())
+    					   .andReturn();
     	
-    	assertThat(response.getStatus()).isEqualTo(HttpStatus.NOT_FOUND.value());
-    	assertThat(response.getContentAsString()).contains("Message: Operation not found");
+    	ObjectMapper objectMapper = new ObjectMapper();
+    	ErrorDetails errorResponse = objectMapper.readValue(result.getResponse().getContentAsString(), ErrorDetails.class);
+    	Assert.assertEquals(errorResponse.getMessage(), "Operation not found");    	
     }	
+    
+    /**
+	 * Tests if an invalid request creates a response with status code = 400.
+	 */
+    @Test
+    public void invalidRequestShouldReturnBadRequestStatus() throws Exception {
+    	OperationRequest request = new OperationRequest();    	  	
+    	
+    	mockMvc.perform(post("/calculate").contentType(MediaType.APPLICATION_JSON)
+	    .content(jsonOperationRequest.write(request).getJson()))
+	    .andExpect(status().isBadRequest());    					   
+    }    
 }

@@ -20,7 +20,7 @@ public class OperationService {
 	public OperationResponse calculate(OperationRequest request) throws OperationNotFoundException {															    		    		
 		String requestedOperation = request.getOperation().toUpperCase();    			    
 	    if(!isOperationValid(requestedOperation))	    	
-	    	throw new OperationNotFoundException("Unrecognized operation \"" + request.getOperation() + "\"");
+	    	throw new OperationNotFoundException("Unrecognized operation: " + request.getOperation());
 	    
 	    Operation newOperation = Operation.valueOf(requestedOperation);					
 		double result = newOperation.calculate(request.getValue1(), request.getValue2());										
