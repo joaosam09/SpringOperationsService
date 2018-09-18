@@ -15,9 +15,9 @@ public class OperationRequest {
 	private double value1;	
 	private double value2;
 	
-	@NotNull
-	@NotEmpty
-	@NotBlank
+	@NotNull(message = "Operation is a required field")
+	@NotEmpty(message = "Operation cannot be empty")
+	@NotBlank(message = "Operation cannot be empty")
 	private String operation;
 	
 	public OperationRequest() {

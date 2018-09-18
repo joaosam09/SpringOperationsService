@@ -1,9 +1,9 @@
 package com.criticalsoftware.springboot.operation;
 
+import static org.junit.Assert.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -68,7 +68,7 @@ public class OperationControllerMockMvcTest {
     	
     	ObjectMapper objectMapper = new ObjectMapper();
     	ErrorDetails errorResponse = objectMapper.readValue(result.getResponse().getContentAsString(), ErrorDetails.class);
-    	Assert.assertEquals(errorResponse.getMessage(), "Operation not found");    	
+    	assertEquals(errorResponse.getMessage(), "Operation not found");    	
     }	
     
     /**

@@ -17,31 +17,17 @@ public class OperationService {
 	 * @return OperationResponse Returns an instance with the result and date of the operation.
 	 * @throws OperationNotFoundException Exception thrown when the requested operation doesn't exist
 	 */
-	public OperationResponse calculate(OperationRequest request) throws OperationNotFoundException {															    		    		
-		String requestedOperation = request.getOperation().toUpperCase();    			    
-	    if(!isOperationValid(requestedOperation))	    	
+	public OperationResponse calculate(OperationRequest request) throws OperationNotFoundException {															    		    				
+		Calculator calculator = new Calculator();
+		
+	    if(!calculator.getValidOperations().contains(request.getOperation()))	    	
 	    	throw new OperationNotFoundException("Unrecognized operation: " + request.getOperation());
-	    
-	    Operation newOperation = Operation.valueOf(requestedOperation);					
-		double result = newOperation.calculate(request.getValue1(), request.getValue2());										
+	       	    		
+		double result = calculator.calculate(request.getValue1(), request.getValue2(), request.getOperation());										
 		
 		return createResponse(result);							
 	}
-			
-	/**
-	 * Checks if the specified operation is valid.
-	 * @param operation String with the intended operation.
-	 * @return boolean Returns true if the operation valid and false if not.
-	 */
-	private static boolean isOperationValid(String operation) {			
-		for (Operation op : Operation.values()) {
-            if(op.toString().equals(operation)) 
-            	return true; 
-        }
-		
-		return false;
-	}
-	
+				
 	/**
 	 * Creates a new instance of OperationResponse with the specified parameters and retrieves it.
 	 * @param result Double value representing the result of the calculation.

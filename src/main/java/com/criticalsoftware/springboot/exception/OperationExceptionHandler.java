@@ -39,7 +39,7 @@ public class OperationExceptionHandler extends ResponseEntityExceptionHandler {
         LOGGER.error("Status code " + HttpStatus.BAD_REQUEST.value() + ": " + ex.getMessage());
         return new ResponseEntity<Object>(errorDetails, HttpStatus.BAD_REQUEST);
     }
-	
+		
 	/**
 	 * Handles exceptions of type "OperationNotFoundException".
 	 * @param ex The caught exception	 
@@ -52,7 +52,7 @@ public class OperationExceptionHandler extends ResponseEntityExceptionHandler {
 		LOGGER.error("Status code " + HttpStatus.NOT_FOUND.value() + ": " + ex.getMessage());
 		return new ResponseEntity<Object>(errorDetails, HttpStatus.NOT_FOUND);
 	}
-		
+			
 	/**
 	 * Handles all exceptions.
 	 * @param ex The caught exception

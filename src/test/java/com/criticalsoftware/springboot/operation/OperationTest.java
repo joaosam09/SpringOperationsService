@@ -28,9 +28,11 @@ public class OperationTest {
 		double randomValue1 = minRangeRandomValues + (maxRangeRandomValues - minRangeRandomValues) * rnd.nextDouble();
 		double randomValue2 = minRangeRandomValues + (maxRangeRandomValues - minRangeRandomValues) * rnd.nextDouble();		
 				
-		double addResult = Operation.SUM.calculate(randomValue1, randomValue2);		
-		LOGGER.info(String.format("ADD between %f and %f equals %f", randomValue1, randomValue2, addResult));
-		assertEquals("Failed ADD operation", randomValue1 + randomValue2, addResult, 0);						
+		Calculator calculator = new Calculator();
+		double sumResult = calculator.calculate(randomValue1, randomValue2, "sum");
+		
+		LOGGER.info(String.format("SUM between %f and %f equals %f", randomValue1, randomValue2, sumResult));
+		assertEquals("Failed SUM operation", randomValue1 + randomValue2, sumResult, 0);						
 	}
 	
 	/**
@@ -41,8 +43,10 @@ public class OperationTest {
 		Random rnd = new Random();		
 		double randomValue1 = minRangeRandomValues + (maxRangeRandomValues - minRangeRandomValues) * rnd.nextDouble();
 		double randomValue2 = minRangeRandomValues + (maxRangeRandomValues - minRangeRandomValues) * rnd.nextDouble();		
-				
-		double subResult = Operation.SUBTRACT.calculate(randomValue1, randomValue2);	
+			
+		Calculator calculator = new Calculator();
+		double subResult = calculator.calculate(randomValue1, randomValue2, "subtract");
+		
 		LOGGER.info(String.format("SUBTRACTION between %f and %f equals %f", randomValue1, randomValue2, subResult));
 		assertEquals("Failed SUBTRACT operation", randomValue1 - randomValue2, subResult, 0);		
 	}
@@ -56,9 +60,11 @@ public class OperationTest {
 		double randomValue1 = minRangeRandomValues + (maxRangeRandomValues - minRangeRandomValues) * rnd.nextDouble();
 		double randomValue2 = minRangeRandomValues + (maxRangeRandomValues - minRangeRandomValues) * rnd.nextDouble();		
 				
-		double multiplyResult = Operation.MULTIPLICATION.calculate(randomValue1, randomValue2);		
+		Calculator calculator = new Calculator();
+		double multiplyResult = calculator.calculate(randomValue1, randomValue2, "multiplication");	
+		
 		LOGGER.info(String.format("MULTIPLICATION between %f and %f equals %f", randomValue1, randomValue2, multiplyResult));
-		assertEquals("Failed MULTIPLY operation", randomValue1 * randomValue2, multiplyResult, 0);	
+		assertEquals("Failed MULTIPLICATION operation", randomValue1 * randomValue2, multiplyResult, 0);	
 	}
 	
 	/**
@@ -70,13 +76,15 @@ public class OperationTest {
 		double randomValue1 = minRangeRandomValues + (maxRangeRandomValues - minRangeRandomValues) * rnd.nextDouble();
 		double randomValue2 = minRangeRandomValues + (maxRangeRandomValues - minRangeRandomValues) * rnd.nextDouble();				
 		
-		double divideResult = Operation.DIVISION.calculate(randomValue1, randomValue2);
+		Calculator calculator = new Calculator();
+		double divideResult = calculator.calculate(randomValue1, randomValue2, "division");
+		
 		LOGGER.info(String.format("DIVISION between %f and %f equals %f", randomValue1, randomValue2, divideResult));
 		assertEquals("Failed DIVIDE operation", randomValue1 / randomValue2, divideResult, 0);						
 	}
 	
 	/**
-	 * Tests result of avg operation.
+	 * Tests result of average operation.
 	 */
 	@Test
 	public void testAvgOperation() {						
@@ -84,7 +92,9 @@ public class OperationTest {
 		double randomValue1 = minRangeRandomValues + (maxRangeRandomValues - minRangeRandomValues) * rnd.nextDouble();
 		double randomValue2 = minRangeRandomValues + (maxRangeRandomValues - minRangeRandomValues) * rnd.nextDouble();				
 		
-		double avgResult = Operation.AVG.calculate(randomValue1, randomValue2);
+		Calculator calculator = new Calculator();
+		double avgResult = calculator.calculate(randomValue1, randomValue2, "avg");
+		
 		LOGGER.info(String.format("AVERAGE between %f and %f equals %f", randomValue1, randomValue2, avgResult));
 		assertEquals("Failed AVERAGE operation", (randomValue1 + randomValue2) / 2, avgResult, 0);						
 	}	
